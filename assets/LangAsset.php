@@ -7,7 +7,7 @@
  * Time: 18:33
  */
 
-namespace kilyakus\widget\editor\assets;
+namespace kilyakus\widget\redactor\assets;
 
 use Yii;
 use yii\web\AssetBundle;

@@ -1,13 +1,13 @@
 <?php
-namespace kilyakus\widget\editor;
+namespace kilyakus\widget\redactor;
 
 use Yii;
-use kilyakus\widget\editor\assets\CodeMirrorAsset;
-use kilyakus\widget\editor\assets\LangAsset;
-use kilyakus\widget\editor\assets\SummernoteBs3Asset;
-use kilyakus\widget\editor\assets\SummernoteBs4Asset;
-use kilyakus\widget\editor\assets\SummernoteLiteAsset;
-use kilyakus\widget\editor\assets\EmojiAsset;
+use kilyakus\widget\redactor\assets\CodeMirrorAsset;
+use kilyakus\widget\redactor\assets\LangAsset;
+use kilyakus\widget\redactor\assets\SummernoteBs3Asset;
+use kilyakus\widget\redactor\assets\SummernoteBs4Asset;
+use kilyakus\widget\redactor\assets\SummernoteLiteAsset;
+use kilyakus\widget\redactor\assets\EmojiAsset;
 use yii\bootstrap\InputWidget;
 use yii\bootstrap\Html;
 use yii\helpers\ArrayHelper;
