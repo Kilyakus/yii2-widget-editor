@@ -4,6 +4,7 @@ namespace kilyakus\widget\redactor;
 use Yii;
 use kilyakus\widget\redactor\assets\CodeMirrorAsset;
 use kilyakus\widget\redactor\assets\LangAsset;
+use kilyakus\widget\redactor\assets\SummernoteBaseAsset;
 use kilyakus\widget\redactor\assets\SummernoteBs3Asset;
 use kilyakus\widget\redactor\assets\SummernoteBs4Asset;
 use kilyakus\widget\redactor\assets\SummernoteLiteAsset;
@@ -12,11 +13,20 @@ use yii\bootstrap\InputWidget;
 use yii\bootstrap\Html;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
+use yii\helpers\Inflector;
 
 class Summernote extends InputWidget
 {
-    /* Какие стили подключать: 'bootstrap-3', 'bootstrap-4', 'lite' */
-    public $widgetAsset = 'bootstrap-3';
+    const THEME_BS3 = 'bootstrap-3';
+    const THEME_BS4 = 'bootstrap-4';
+    const THEME_LITE = 'lite';
+    const THEME_SIMPLE = 'simple';
+
+    public $theme = self::THEME_SIMPLE;
+
+    protected static $_bs3Themes = [
+        self::THEME_SIMPLE,
+    ];
 
     /* Флаг - использовать перевод */
     public $i18n = false;
@@ -61,14 +71,24 @@ class Summernote extends InputWidget
         $fieldId = $this->options['id'];
 
         $view = $this->getView();
-        /* Регистрация виджета */
-        if ($this->widgetAsset == 'bootstrap-4') {
+
+        if ($this->theme == self::THEME_BS4) {
             SummernoteBs4Asset::register($view);
-        } else if ($this->widgetAsset == 'lite') {
-            SummernoteLiteAsset::register($view);
-        } else {
+        } else if ($this->theme == self::THEME_BS3) {
             SummernoteBs3Asset::register($view);
+        } else {
+            SummernoteLiteAsset::register($view);
         }
+
+        if (in_array($this->theme, self::$_bs3Themes)) {
+
+            SummernoteBs3Asset::register($view);
+
+            $bundleClass = __NAMESPACE__ . '\assets\Summernote' . Inflector::id2camel($this->theme) . 'Asset';
+            $bundleClass::register($view);
+        }
+        
+        SummernoteBaseAsset::register($view);
 
         /* Регистрация языка  */
         if ($this->i18n) {

@@ -1,0 +1,105 @@
+.note-editor {position:static;border-radius:4px;}
+  .note-editor .note-toolbar {position:static;}
+  .note-editor .modal .modal-header .close {position:absolute;right:25px;top:20px;font-size:0;}
+  .note-editor .panel-heading.note-toolbar {padding:5px 10px 10px 10px;border-top-left-radius:4px;border-top-right-radius:4px;}
+    .note-editor .panel-heading.note-toolbar .note-btn {outline:none !important;}
+    .note-editor .panel-heading.note-toolbar .dropdown-menu {min-width:185px;max-height:250px;overflow:auto;padding:0;}
+    .note-editor .panel-heading.note-toolbar .note-color .dropdown-menu {min-width:350px;padding:10px;max-height:none;}
+      .note-editor .panel-heading.note-toolbar .note-color .dropdown-menu > li {display:table;table-layout:fixed;}
+        .note-editor .panel-heading.note-toolbar .note-color .dropdown-menu > li > .btn-group {display:table-cell !important;}
+          .note-editor .panel-heading.note-toolbar .note-color .dropdown-menu > li > .btn-group:first-child {  padding-right:10px;}
+          .note-editor .panel-heading.note-toolbar .note-color .dropdown-menu > li > .btn-group .note-color-reset {  margin:5px 0 10px 0;}
+          .note-editor .panel-heading.note-toolbar .note-color .dropdown-menu > li > .btn-group .note-palette-title {  margin:5px 0;  text-align:left;  border:0;}
+  .note-editor .dropdown-toggle::after,
+  .note-editor .note-btn.dropdown-toggle::after {display:none;}
+  
+.note-editor.note-frame {border:1px solid #e2e5ec;}
+  .note-editor.note-frame .panel-heading.note-toolbar {background:#f7f8fa;}
+  .note-editor.note-frame .note-statusbar {background:#f7f8fa;}
+
+.note-editor .note-toolbar .note-btn-group .note-btn {background:white;border:1px solid #ebedf2;}
+  .note-editor .note-toolbar .note-btn-group .note-btn i {vertical-align:initial;line-height:initial;padding-right:0;color:#74788d;}
+  .note-editor .note-toolbar .note-btn-group .note-btn:hover,
+  .note-editor .note-toolbar .note-btn-group .note-btn:focus,
+  .note-editor .note-toolbar .note-btn-group .note-btn:active,
+  .note-editor .note-toolbar .note-btn-group .note-btn.active {background:transparent;color:#595d6e;}
+
+.note-editable .table.table-bordered th, .note-editable .table.table-bordered td {border:1px solid #e2e5ec;}
+
+.is-valid .note-editor {border-color:#1dc9b7;}
+.is-invalid .note-editor {border-color:#fd397a;}
+
+.note-popover .popover-content .note-color .dropdown-menu .note-palette .note-color-reset,
+.panel-heading.note-toolbar .note-color .dropdown-menu .note-palette .note-color-reset,
+.note-popover .popover-content .note-color .dropdown-menu .note-palette .note-color-select,
+.panel-heading.note-toolbar .note-color .dropdown-menu .note-palette .note-color-select {margin:3px 0;}
+
+.note-popover.popover {display:none;}
+.note-popover .popover-content .note-para .dropdown-menu,
+.panel-heading.note-toolbar .note-para .dropdown-menu {overflow:visible;padding:5px;}
+.note-popover .popover-content .note-para .show .dropdown-menu,
+.panel-heading.note-toolbar .note-para .show .dropdown-menu {display:flex!important;}
+.note-popover .popover-content .btn-group .note-table,
+.panel-heading.note-toolbar .btn-group .note-table {padding:5px;overflow:visible;min-width:auto;}
+.note-popover .popover-content .note-color .dropdown-toggle,
+.panel-heading.note-toolbar .note-color .dropdown-toggle {}
+.note-popover .popover-content .note-color .dropdown-toggle .note-icon-caret:before,
+.panel-heading.note-toolbar .note-color .dropdown-toggle .note-icon-caret:before {margin-left:0;}
+
+.md-editor {border-radius:4px;border-bottom-left-radius:0;border-bottom-right-radius:0;outline:none !important;}
+  .md-editor .md-footer,
+  .md-editor .md-header {padding:10px 10px;}
+  .md-editor .md-header {border-top-left-radius:4px;border-top-right-radius:4px;}
+    .md-editor .md-header .btn-group {margin-right:10px;}
+      .md-editor .md-header .btn-group .note-btn {background:white;border:1px solid #ebedf2;color:#74788d;transition:all 0.3s;}
+        .md-editor .md-header .btn-group .btn:hover, .md-editor .md-header .btn-group .btn:focus, .md-editor .md-header .btn-group .btn:active, .md-editor .md-header .btn-group .btn.active {transition:all 0.3s;color:#595d6e;background:transparent;}
+  .md-editor .md-footer {border-bottom-left-radius:0;border-bottom-right-radius:0;}
+  .md-editor > textarea {padding:10px 10px;border-bottom-left-radius:0;border-bottom-right-radius:0;}
+
+.md-editor {border:1px solid #e2e5ec;}
+  .md-editor.active {border:1px solid #e2e5ec;box-shadow:none;}
+  .md-editor .md-footer,
+  .md-editor .md-header {background:#f7f8fa;}
+  .md-editor > textarea {background:#f7f8fa;}
+  .md-editor.active > textarea {background:#f7f8fa;}
+
+.is-valid .md-editor {border-color:#1dc9b7;}
+.is-invalid .md-editor {border-color:#fd397a;}
+
+/* --------------- */
+
+/*.kv-editor-container,
+.kv-editor-container.form-control {
+    height:100%;
+    padding:0;
+}
+.kv-editor-container > .form-control
+.kv-editor-container.form-control > .form-control {
+    border:none;
+}
+.kv-editor-container .note-editor
+.kv-editor-container.form-control .note-editor {
+    border:none;
+}
+.note-btn-group.note-view {
+    float: right;
+}
+.note-editor.note-frame {
+    margin-bottom:0px;
+    border:0;
+}
+.note-editor.note-frame .panel-heading.note-toolbar {padding:5px 0 10px 0;background:transparent;border-bottom:0;}
+.note-editor.note-frame .note-editing-area {border:1px solid #e2e5ec;border-bottom:0;border-top-left-radius:4px;border-top-right-radius:4px;}
+.note-editor.note-frame .note-status-output:empty {padding:0;}
+.note-editor.note-frame .note-statusbar {border:1px solid #e2e5ec;}
+.note-editor.note-frame.fullscreen {
+    border: none;
+    border-radius: 0;
+}
+.note-popover .popover-content,
+.card-header.note-toolbar {
+    background-color: rgba(0, 0, 0, .03);
+}
+
+.note-popover .popover-content>.btn-group:last-child,
+.panel-heading.note-toolbar>.btn-group:last-child {margin-right:0;}*/

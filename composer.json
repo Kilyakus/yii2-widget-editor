@@ -4,6 +4,17 @@
     "license": "MIT",
     "minimum-stability" : "dev",
     "prefer-stable": true,
+    "authors": [
+        {
+            "name": "phpNT",
+            "email": "phpnt@phpnt.com",
+            "homepage": "http://phpnt.com"
+        },
+        {
+            "name": "Edited by: Kilyakus",
+            "email": "aleksandr.kilyakov@gmail.com"
+        }
+    ],
     "require": {
         "php": ">=5.4.0",
         "yiisoft/yii2": "*",

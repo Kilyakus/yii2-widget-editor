@@ -1,0 +1,20 @@
+.panel-heading.note-toolbar .dropdown-menu p,
+.panel-heading.note-toolbar .dropdown-menu h1,
+.panel-heading.note-toolbar .dropdown-menu h2,
+.panel-heading.note-toolbar .dropdown-menu h3,
+.panel-heading.note-toolbar .dropdown-menu h4,
+.panel-heading.note-toolbar .dropdown-menu h5,
+.panel-heading.note-toolbar .dropdown-menu h6,
+.panel-heading.note-toolbar .dropdown-menu blockquote,
+.panel-heading.note-toolbar .dropdown-menu pre {margin-bottom:0px;}
+
+.note-editor .note-toolbar .note-btn-group .note-btn:before,
+.note-editor .note-toolbar .note-btn-group .note-btn:after {content:none;}
+.note-editor .note-toolbar .note-btn-group .note-btn .note-icon-caret:before {text-align:center;display:inline;border:0;font-size:0.6rem;line-height:0;vertical-align:middle;position:relative;opacity:0.7;font-family:Flaticon2;font-style:normal;font-weight:normal;font-variant:normal;line-height:1;text-decoration:inherit;text-rendering:optimizeLegibility;text-transform:none;-moz-osx-font-smoothing:grayscale;-webkit-font-smoothing:antialiased;font-smoothing:antialiased;content: "";}
+
+.note-btn-group>.note-btn,
+.note-btn-group>.note-btn-group {margin-left:-1px;}
+
+.note-editor .note-toolbar .note-btn-group.note-view {float:right;}
+
+.note-editor .note-toolbar .note-btn-group.note-color {}
