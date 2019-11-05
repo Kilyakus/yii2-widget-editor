@@ -1,0 +1,29 @@
+{
+    "name": "phpnt/yii2-widget-editor",
+    "type": "yii2-extension",
+    "license": "MIT",
+    "minimum-stability" : "dev",
+    "prefer-stable": true,
+    "authors": [
+        {
+            "name": "phpNT",
+            "email": "phpnt@phpnt.com",
+            "homepage": "http://phpnt.com"
+        },
+        {
+            "name": "Edited by: Kilyakus",
+            "email": "aleksandr.kilyakov@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "yiisoft/yii2": "*",
+        "phpnt/font-awesome": "*",
+        "bower-asset/summernote": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "kilyakus\\widget\\editor\\": ""
+        }
+    }
+}
