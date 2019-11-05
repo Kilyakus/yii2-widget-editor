@@ -1,21 +1,13 @@
 <?php
-/**
- * User: Vladimir Baranov <phpnt@yandex.ru>
- * Git: <https://github.com/phpnt>
- * VK: <https://vk.com/phpnt>
- * Date: 24.01.2019
- * Time: 16:31
- */
-
-namespace phpnt\summernote;
+namespace kilyakus\widget\editor;
 
 use Yii;
-use phpnt\summernote\assets\CodeMirrorAsset;
-use phpnt\summernote\assets\LangAsset;
-use phpnt\summernote\assets\SummernoteBs3Asset;
-use phpnt\summernote\assets\SummernoteBs4Asset;
-use phpnt\summernote\assets\SummernoteLiteAsset;
-use phpnt\summernote\assets\EmojiAsset;
+use kilyakus\widget\editor\assets\CodeMirrorAsset;
+use kilyakus\widget\editor\assets\LangAsset;
+use kilyakus\widget\editor\assets\SummernoteBs3Asset;
+use kilyakus\widget\editor\assets\SummernoteBs4Asset;
+use kilyakus\widget\editor\assets\SummernoteLiteAsset;
+use kilyakus\widget\editor\assets\EmojiAsset;
 use yii\bootstrap\InputWidget;
 use yii\bootstrap\Html;
 use yii\helpers\ArrayHelper;

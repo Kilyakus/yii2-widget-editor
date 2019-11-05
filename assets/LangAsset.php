@@ -7,7 +7,7 @@
  * Time: 18:33
  */
 
-namespace phpnt\summernote\assets;
+namespace kilyakus\widget\editor\assets;
 
 use Yii;
 use yii\web\AssetBundle;
