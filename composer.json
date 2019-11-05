@@ -1,5 +1,5 @@
 {
-    "name": "kilyakus/yii2-widget-editor",
+    "name": "kilyakus/yii2-widget-redactor",
     "type": "yii2-extension",
     "license": "MIT",
     "minimum-stability" : "dev",
@@ -23,7 +23,7 @@
     },
     "autoload": {
         "psr-4": {
-            "kilyakus\\widget\\editor\\": ""
+            "kilyakus\\widget\\redactor\\": ""
         }
     }
 }
