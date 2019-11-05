@@ -1,5 +1,5 @@
 {
-    "name": "phpnt/yii2-widget-editor",
+    "name": "kilyakus/yii2-widget-editor",
     "type": "yii2-extension",
     "license": "MIT",
     "minimum-stability" : "dev",
