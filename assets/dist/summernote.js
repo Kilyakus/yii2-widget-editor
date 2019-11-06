@@ -6010,6 +6010,7 @@ class Fullscreen_Fullscreen {
 }
 // CONCATENATED MODULE: ./src/js/base/module/Handle.js
 
+
 class Handle_Handle {
   constructor(context) {
     this.context = context;
@@ -6083,48 +6084,44 @@ class Handle_Handle {
 
     const isImage = dom.isImg(target);
     const $selection = this.$handle.find('.note-control-selection');
-    
+    this.context.invoke('imagePopover.update', target, event);
 
     if (isImage) {
-
       const $image = external_jQuery_default()(target);
-      const emoji = $image.outerWidth(false) <= 64 && $image.outerHeight(false) <= 64;
-      
-      if(!emoji){
-        this.context.invoke('imagePopover.update', target, event);
-
-        const position = $image.position();
-        const pos = {
-          left: position.left + parseInt($image.css('marginLeft'), 10),
-          top: position.top + parseInt($image.css('marginTop'), 10)
-        }; // exclude margin
-
-        const imageSize = {
-          w: $image.outerWidth(false),
-          h: $image.outerHeight(false)
-        };
-        $selection.css({
-          display: 'block',
-          left: pos.left,
-          top: pos.top,
-          width: imageSize.w,
-          height: imageSize.h
-        }).data('target', $image); // save current image element.
-
-        const origImageObj = new Image();
-        origImageObj.src = $image.attr('src');
-        const sizingText = imageSize.w + 'x' + imageSize.h + ' (' + this.lang.image.original + ': ' + origImageObj.width + 'x' + origImageObj.height + ')';
-        $selection.find('.note-control-selection-info').text(sizingText);
-        this.context.invoke('editor.saveTarget', target);
-      } else {
-        this.hide();
+      if($image.outerWidth(false) <= 64 && $image.outerHeight(false) <= 64){
+        return false;
       }
+
+      const position = $image.position();
+      const pos = {
+        left: position.left + parseInt($image.css('marginLeft'), 10),
+        top: position.top + parseInt($image.css('marginTop'), 10)
+      }; // exclude margin
+
+      const imageSize = {
+        w: $image.outerWidth(false),
+        h: $image.outerHeight(false)
+      };
+      $selection.css({
+        display: 'block',
+        left: pos.left,
+        top: pos.top,
+        width: imageSize.w,
+        height: imageSize.h
+      }).data('target', $image); // save current image element.
+
+      const origImageObj = new Image();
+      origImageObj.src = $image.attr('src');
+      const sizingText = imageSize.w + 'x' + imageSize.h + ' (' + this.lang.image.original + ': ' + origImageObj.width + 'x' + origImageObj.height + ')';
+      $selection.find('.note-control-selection-info').text(sizingText);
+      this.context.invoke('editor.saveTarget', target);
+    } else {
+      this.hide();
     }
-    
-    this.context.invoke('imagePopover.update', target, event);
 
     return isImage;
   }
+
   /**
    * hide
    *
@@ -7668,6 +7665,10 @@ class ImagePopover_ImagePopover {
 
   update(target, event) {
     if (dom.isImg(target)) {
+      const $image = external_jQuery_default()(target);
+      if($image.outerWidth(false) <= 64 && $image.outerHeight(false) <= 64){
+        return false;
+      }
       const pos = dom.posFromPlaceholder(target);
       const posEditor = dom.posFromPlaceholder(this.editable);
       this.$popover.css({
