@@ -18,3 +18,7 @@
 .note-editor .note-toolbar .note-btn-group.note-view {float:right;}
 
 .note-editor .note-toolbar .note-btn-group.note-color {}
+
+.note-editor.note-frame .note-status-output:empty {padding:0;}
+
+.note-handle .note-control-selection .note-control-selection-info {white-space:nowrap;right:auto;left:0;}

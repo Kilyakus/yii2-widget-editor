@@ -1,10 +1,3 @@
-/*!
- * @copyright Copyright &copy; Kartik Visweswaran, Krajee.com, 2014 - 2019
- * @package yii2-editors
- * @version 1.0.0
- *
- * Krajee Summernote code formatting script enhancements
- */
 var kvFormatCode, kvInitCMFormatter;
 (function ($) {
     "use strict";

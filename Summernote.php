@@ -9,14 +9,17 @@ use kilyakus\widget\redactor\assets\SummernoteBs3Asset;
 use kilyakus\widget\redactor\assets\SummernoteBs4Asset;
 use kilyakus\widget\redactor\assets\SummernoteLiteAsset;
 use kilyakus\widget\redactor\assets\EmojiAsset;
-use yii\bootstrap\InputWidget;
+use kilyakus\widgets\InputWidget;
 use yii\bootstrap\Html;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
 use yii\helpers\Inflector;
+use yii\web\JsExpression;
 
 class Summernote extends InputWidget
 {
+    public $pluginName = 'summernote';
+
     const THEME_BS3 = 'bootstrap-3';
     const THEME_BS4 = 'bootstrap-4';
     const THEME_LITE = 'lite';
@@ -28,45 +31,112 @@ class Summernote extends InputWidget
         self::THEME_SIMPLE,
     ];
 
-    /* Флаг - использовать перевод */
-    public $i18n = false;
+    protected static $_bs4Themes = [
+    ];
 
-    /* Флаг - включить эмоджи */
+    public $i18n = true;
     public $emoji = false;
-
-    /* Флаг - использовать CodeMirror (оформленный редактор кода) */
+    public $fullscreen = true;
     public $codemirror = false;
 
     public $options         = [];
-    public $widgetOptions   = [];
-
-    private $codemirrorOptions = [
-        /* Настройки редактора кода */
-        'codemirror' => [
-            'mode' => 'text/html',
-            'htmlMode' => true,
-            'lineNumbers' => true,
-            'theme' => 'monokai',
+    public $pluginOptions   = [
+        'tabsize' => 2,
+        'minHeight' => 150,
+        'maxHeight' => 400,
+        'focus' => true,
+        'toolbar' => [
+            ['style1', ['style']],
+            ['style2', ['bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript']],
+            ['font', ['fontname', 'fontsize', 'height', 'color', 'clear']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['insert', ['link', 'picture', 'video', 'table', 'hr']],
         ]
     ];
 
-    public function init()
-    {
-        parent::init();
-    }
+    public $codemirrorOptions = [
+        'codemirror' => [
+            // 'theme' => 'monokai',
+            'mode' => 'text/html',
+            'htmlMode' => true,
+            'lineNumbers' => true,
+            'styleActiveLine' => true,
+            'matchBrackets' => true,
+            'smartIndent' => true,
+        ]
+    ];
+
+    public $hintWords = [];
+
+    public $hintMentions = [];
+
+    public $container = ['class' => 'note-editor-container'];
 
     public function run()
     {
-        $this->registerScript();
+        return $this->initWidget();
+    }
 
-        if ($this->hasModel()) {
-            echo Html::activeTextarea($this->model, $this->attribute, $this->options);
-        } else {
-            echo Html::textarea('text', $this->value, $this->options);
+    protected function initWidget()
+    {
+        $this->_msgCat = 'redactor';
+        if (!empty($this->options['placeholder']) && empty($this->pluginOptions['placeholder'])) {
+            $this->pluginOptions['placeholder'] = $this->options['placeholder'];
+        }
+        $tag = ArrayHelper::remove($this->container, 'tag', 'div');
+        if (!isset($this->container['id'])) {
+            $this->container['id'] = $this->options['id'] . '-container';
+        }
+        $this->initPresets();
+        $this->initHints();
+        $this->registerAssets();
+        return Html::tag($tag, $this->getInput('textarea'), $this->container);
+    }
+
+    protected function initPresets()
+    {
+        $view = $this->getView();
+
+        $toolView = [];
+
+        if ($this->codemirror) {
+
+            $toolView[] = 'codeview';
+
+            if (isset($this->pluginOptions['codemirror'])) {
+                $this->codemirrorOptions = ArrayHelper::merge($this->codemirrorOptions, $this->pluginOptions['codemirror']);
+            }
+            $this->pluginOptions = ArrayHelper::merge($this->pluginOptions, $this->codemirrorOptions);
+
+            CodeMirrorAsset::register($view);
+        }
+
+        if ($this->fullscreen) {
+
+            $toolView[] = 'fullscreen';
+            
+        }
+
+        if (!empty($toolView)) {
+            $this->pluginOptions['toolbar'][] = ['view', $toolView];
         }
     }
 
-    public function registerScript()
+    public function getPluginScript($name, $element = null, $callback = null, $callbackCon = null)
+    {
+        $script = '';
+        $id = $this->options['id'];
+        if ($this->emoji) {
+            $script .= "kvInitEmojis();\n";
+        }
+        // if ($this->codemirror && $this->autoFormatCode) {
+        //     $script .= "kvInitCMFormatter('{$id}');\n";
+        // }
+        $script .= parent::getPluginScript($name, $element, $callback, $callbackCon);
+        return $script;
+    }
+
+    public function registerAssets()
     {
         $fieldId = $this->options['id'];
 
@@ -96,35 +166,84 @@ class Summernote extends InputWidget
                 'lang' => Yii::$app->language . '-' . strtoupper(Yii::$app->language)
             ];
             LangAsset::register($view);
-            $this->widgetOptions = ArrayHelper::merge($this->widgetOptions, $lang) ;
+            $this->pluginOptions = ArrayHelper::merge($this->pluginOptions, $lang) ;
         }
 
-        /* Регистрация CodeMirror (оформленный редактор кода)  */
-        if ($this->codemirror) {
-            if (!isset($this->widgetOptions['codemirror'])) {
-                $this->widgetOptions = ArrayHelper::merge($this->widgetOptions, $this->codemirrorOptions) ;
-            }
-            CodeMirrorAsset::register($view);
-        }
-
-        /* Включение эмоджи  */
         if ($this->emoji) {
-            $emoji['toolbar'] = [
-                ['insert', ['emoji']]
-            ];
-            $this->widgetOptions = ArrayHelper::merge($emoji, $this->widgetOptions);
             EmojiAsset::register($view);
-            $this->registerEmogi($view);
         }
 
-        $widgetOptions = Json::encode($this->widgetOptions);
+        $pluginOptions = Json::encode($this->pluginOptions);
 
         $js = <<< JS
         $(document).ready(function(){
-            $("#$fieldId").summernote($widgetOptions);
+            $("#$fieldId").summernote($pluginOptions);
         });
 JS;
         $view->registerJs($js);
+
+        $this->registerPlugin($this->pluginName);
+    }
+
+    protected function initHints()
+    {
+        $hint = ArrayHelper::getValue($this->pluginOptions, 'hint', []);
+        if (!empty($this->hintWords)) {
+            $hint[] = [
+                'words' => $this->hintWords,
+                'match' => new JsExpression('/\b(\w{1,})$/'),
+                'search' => new JsExpression(
+                    'function (keyword, callback) {' .
+                    '    callback($.grep(this.words, function (item) {' .
+                    '        return item.indexOf(keyword) === 0;' .
+                    '    }));' .
+                    '}'
+                ),
+            ];
+        }
+        if (!empty($this->hintMentions)) {
+            $hint[] = [
+                'mentions' => $this->hintMentions,
+                'match' => new JsExpression('/\B@(\w*)$/'),
+                'search' => new JsExpression(
+                    'function (keyword, callback) {' .
+                    '    callback($.grep(this.mentions, function (item) {' .
+                    '        return item.indexOf(keyword) == 0;' .
+                    '    }));' .
+                    '}'
+                ),
+                'content' => new JsExpression('function (item) { return "@" + item; }'),
+            ];
+        }
+        if ($this->emoji) {
+            /** @noinspection RequiredAttributes */
+            $hint[] = [
+                'match' => new JsExpression('/:([\-+\w]+)$/'),
+                'search' => new JsExpression(
+                    'function (keyword, callback) {' .
+                    '    callback($.grep(kvEmojis, function (item) {' .
+                    '        return item.indexOf(keyword) === 0;' .
+                    '    }));' .
+                    '}'
+                ),
+                'template' => new JsExpression(
+                    'function (item) {' .
+                    '    var content = kvEmojiUrls[item];' .
+                    '    return \'<img src="\' + content + \'" width="20" /> :\' + item + \':\'' .
+                    '}'
+                ),
+                'content' => new JsExpression(
+                    'function (item) {' .
+                    '    var url = kvEmojiUrls[item];' .
+                    '    if (url) {' .
+                    '        return $("<img />").attr("src", url).css("width", 20)[0];' .
+                    '    }' .
+                    '    return "";' .
+                    '}'
+                ),
+            ];
+        }
+        $this->pluginOptions['hint'] = $hint;
     }
 
 

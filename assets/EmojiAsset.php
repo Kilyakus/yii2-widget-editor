@@ -1,39 +1,12 @@
 <?php
-/**
- * User: Vladimir Baranov <phpnt@yandex.ru>
- * Git: <https://github.com/phpnt>
- * VK: <https://vk.com/phpnt>
- * Date: 25.01.2019
- * Time: 10:54
- */
-
 namespace kilyakus\widget\redactor\assets;
 
-use yii\web\AssetBundle;
-
-class EmojiAsset extends AssetBundle
+class EmojiAsset extends BaseAsset
 {
-    public function init() {
-
+    public function init()
+    {
+        $this->setSourcePath(__DIR__ . '/lib/emoji');
+        $this->setupAssets('js', ['js/summernote-emoji']);
         parent::init();
     }
-
-    /**
-     * @inherit
-     */
-    public $sourcePath = '@phpnt/summernote/emoji';
-
-    /**
-     * @inherit
-     */
-    public $css = [
-        'css/emoji.css',
-    ];
-
-    /**
-     * @inherit
-     */
-    public $js = [
-        'js/config.js',
-    ];
 }

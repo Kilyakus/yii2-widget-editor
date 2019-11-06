@@ -5,15 +5,12 @@ use yii\web\AssetBundle;
 
 class SummernoteBaseAsset extends AssetBundle
 {
-    public $depends = [
-        'kartik\editors\assets\CodemirrorFormatterAsset'
-    ];
-
     public function init()
     {
         $this->sourcePath = __DIR__ . '/lib/base';
 
         $this->css[] = 'css/base-summernote.css';
+        $this->css[] = 'css/base-codemirror.css';
 
         parent::init();
     }

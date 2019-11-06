@@ -17,7 +17,7 @@ class LangAsset extends AssetBundle
     /**
      * @inherit
      */
-    public $sourcePath = '@bower/summernote';
+    public $sourcePath = '@kilyakus/widget/redactor/assets/dist/lang';
 
     public function init()
     {
@@ -26,7 +26,7 @@ class LangAsset extends AssetBundle
         if (Yii::$app->language != 'en') {
             $lang = Yii::$app->language . '-' . strtoupper(Yii::$app->language);
             $this->js = [
-                'dist/lang/summernote-' . $lang . '.js'
+                'summernote-' . $lang . '.js'
             ];
         }
     }
