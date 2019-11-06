@@ -93,6 +93,7 @@ class Summernote extends InputWidget
         }
         $this->initPresets();
         $this->initHints();
+        $this->initCallbacks();
         $this->registerAssets();
         return Html::tag($tag, $this->getInput('textarea'), $this->container);
     }
@@ -268,49 +269,51 @@ JS;
             ];
         }
         $this->pluginOptions['hint'] = $hint;
+    }
 
-        $callbacks = ArrayHelper::getValue($this->pluginOptions, 'callbacks', []);
+    protected function initCallbacks()
+    {
+        if($this->uploadUrl){
+            $callbacks = ArrayHelper::getValue($this->pluginOptions, 'callbacks', []);
 
-        $this->uploadUrl = \yii\helpers\Url::to(['/admin/redactor/upload', 'dir' => 'userfiles/' . Yii::$app->user->id . '/images']);
-
-        $callbacks['onImageUpload'] = new JsExpression('function(files) {
-                for(var i=0; i < files.length; i++) {
-                    sendCMSFile(files[i],"#'.$this->options['id'].'");
-                }
-        }');
-
-        $this->pluginOptions['callbacks'] = $callbacks;
-
-
-        $js = <<< JS
-        function sendCMSFile(file,container) {
-            console.log(container)
-            if (file.type.includes('image')) {
-                var name = file.name.split(".");
-                name = name[0];
-                var data = new FormData();
-                data.append('action', 'imgUpload');
-                data.append('file', file);
-                $.ajax({
-                    url: "$this->uploadUrl",
-                    type: 'POST',
-                    contentType: false,
-                    cache: false,
-                    processData: false,
-                    dataType: 'JSON',
-                    data: data,
-                    success: function (response) {
-                        $(container).summernote('insertImage', response.filelink);
-                    },
-                    error: function (jqXHR, textStatus, errorThrown) {
-                        console.error(textStatus + " " + errorThrown);
+            $callbacks['onImageUpload'] = new JsExpression('function(files) {
+                    for(var i=0; i < files.length; i++) {
+                        onImageUpload(files[i],"#'.$this->options['id'].'","'.$this->uploadUrl.'");
                     }
-                });
+            }');
+
+            $this->pluginOptions['callbacks'] = $callbacks;
+
+
+            $js = <<< JS
+            function onImageUpload(file,container,url) {
+                if (file.type.includes('image')) {
+                    var name = file.name.split(".");
+                    name = name[0];
+                    var data = new FormData();
+                    data.append('action', 'imgUpload');
+                    data.append('file', file);
+                    $.ajax({
+                        url: url,
+                        type: 'POST',
+                        contentType: false,
+                        cache: false,
+                        processData: false,
+                        dataType: 'JSON',
+                        data: data,
+                        success: function (response) {
+                            $(container).summernote('insertImage', response.filelink);
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            console.error(textStatus + " " + errorThrown);
+                        }
+                    });
+                }
             }
-        }
 
 JS;
-        $view = $this->getView();
-        $view->registerJs($js, $view::POS_END);
+            $view = $this->getView();
+            $view->registerJs($js, $view::POS_END);
+        }
     }
 }
