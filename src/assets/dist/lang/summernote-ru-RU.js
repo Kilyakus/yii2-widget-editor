@@ -118,7 +118,7 @@ return /******/ (function(modules) { // webpackBootstrap
         bold: 'Полужирный',
         italic: 'Курсив',
         underline: 'Подчёркнутый',
-        clear: 'Убрать стили шрифта',
+        clear: 'Убрать форматирование текста',
         height: 'Высота линии',
         name: 'Шрифт',
         strikethrough: 'Зачёркнутый',

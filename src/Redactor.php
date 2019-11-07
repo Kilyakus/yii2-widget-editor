@@ -5,9 +5,7 @@ use Yii;
 use kilyakus\widget\redactor\assets\CodeMirrorAsset;
 use kilyakus\widget\redactor\assets\LangAsset;
 use kilyakus\widget\redactor\assets\SummernoteBaseAsset;
-use kilyakus\widget\redactor\assets\SummernoteBs3Asset;
-use kilyakus\widget\redactor\assets\SummernoteBs4Asset;
-use kilyakus\widget\redactor\assets\SummernoteLiteAsset;
+use kilyakus\widget\redactor\assets\SummernoteAsset;
 use kilyakus\widget\redactor\assets\EmojiAsset;
 use kilyakus\widgets\InputWidget;
 use yii\bootstrap\Html;
@@ -20,8 +18,8 @@ class Redactor extends InputWidget
 {
     public $pluginName = 'summernote';
 
-    const THEME_BS3 = 'bootstrap-3';
-    const THEME_BS4 = 'bootstrap-4';
+    const THEME_BS3 = 'bs3';
+    const THEME_BS4 = 'bs4';
     const THEME_LITE = 'lite';
     const THEME_SIMPLE = 'simple';
 
@@ -48,11 +46,12 @@ class Redactor extends InputWidget
         'maxHeight' => 400,
         'focus' => true,
         'toolbar' => [
-            ['style1', ['style']],
+            ['style1', ['style', 'clear']],
             ['style2', ['bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript']],
-            ['font', ['fontname', 'fontsize', 'height', 'color', 'clear']],
+            ['font', ['fontname', 'fontsize', 'height', 'color']],
             ['para', ['ul', 'ol', 'paragraph']],
-            ['insert', ['link', 'picture', 'video', 'table', 'hr']],
+            ['insert', ['link', 'picture', 'video', ]],
+            ['misc', ['table', 'hr']]
         ]
     ];
 
@@ -167,30 +166,19 @@ class Redactor extends InputWidget
 
         $view = $this->getView();
 
-        if ($this->theme == self::THEME_BS4) {
-            SummernoteBs4Asset::register($view);
-        } else if ($this->theme == self::THEME_BS3) {
-            SummernoteBs3Asset::register($view);
-        } else {
-            SummernoteLiteAsset::register($view);
+        if (!in_array($this->theme, self::$_bs3Themes) && !in_array($this->theme, self::$_bs4Themes)) {
+            SummernoteAsset::register($view)->define($this->theme, $this->i18n);
         }
 
-        if (in_array($this->theme, self::$_bs3Themes)) {
-
-            SummernoteBs3Asset::register($view);
-
-            $bundleClass = __NAMESPACE__ . '\assets\Summernote' . Inflector::id2camel($this->theme) . 'Asset';
-            $bundleClass::register($view);
-        }
+        $this->registerBundle(self::$_bs3Themes,self::THEME_BS3);
+        $this->registerBundle(self::$_bs4Themes,self::THEME_BS4);
         
         SummernoteBaseAsset::register($view);
 
-        /* Регистрация языка  */
         if ($this->i18n) {
             $lang = [
                 'lang' => Yii::$app->language . '-' . strtoupper(Yii::$app->language)
             ];
-            LangAsset::register($view);
             $this->pluginOptions = ArrayHelper::merge($this->pluginOptions, $lang) ;
         }
 
@@ -208,6 +196,19 @@ JS;
         $view->registerJs($js);
 
         $this->registerPlugin($this->pluginName);
+    }
+
+    public function registerBundle($themes,$theme)
+    {
+        $view = $this->getView();
+
+        if (in_array($this->theme, $themes)) {
+
+            SummernoteAsset::register($view)->define($theme, $this->i18n);
+
+            $bundleClass = __NAMESPACE__ . '\assets\Summernote' . Inflector::id2camel($this->theme) . 'Asset';
+            $bundleClass::register($view);
+        }
     }
 
     protected function initHints()
