@@ -24,7 +24,7 @@ class SummernoteAsset extends AssetBundle
             $this->css[] = 'summernote.css';
             $this->js[] = 'summernote.js';
 
-        } else {
+        } else if ($theme == self::THEME_LITE) {
 
             $this->css[] = 'summernote-lite.css';
             $this->js[] = 'summernote-lite.js';

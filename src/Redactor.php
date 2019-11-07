@@ -3,10 +3,8 @@ namespace kilyakus\widget\redactor;
 
 use Yii;
 use kilyakus\widget\redactor\assets\CodeMirrorAsset;
-use kilyakus\widget\redactor\assets\LangAsset;
-use kilyakus\widget\redactor\assets\SummernoteBaseAsset;
 use kilyakus\widget\redactor\assets\SummernoteAsset;
-use kilyakus\widget\redactor\assets\EmojiAsset;
+use kilyakus\widget\redactor\assets\SummernoteThemeAsset;
 use kilyakus\widgets\InputWidget;
 use yii\bootstrap\Html;
 use yii\helpers\ArrayHelper;
@@ -30,6 +28,9 @@ class Redactor extends InputWidget
     ];
 
     protected static $_bs4Themes = [
+    ];
+
+    protected static $_liteThemes = [
     ];
 
     public $i18n = true;
@@ -151,10 +152,10 @@ class Redactor extends InputWidget
         $script = '';
         $id = $this->options['id'];
         if ($this->emoji) {
-            $script .= "kvInitEmojis();\n";
+            $script .= "initEmojis();\n";
         }
-        if ($this->codemirror) { // && $this->autoFormatCode
-            $script .= "kvInitCMFormatter('{$id}');\n";
+        if ($this->codemirror) {
+            $script .= "initCMFormatter('{$id}');\n";
         }
         $script .= parent::getPluginScript($name, $element, $callback, $callbackCon);
         return $script;
@@ -166,24 +167,20 @@ class Redactor extends InputWidget
 
         $view = $this->getView();
 
-        if (!in_array($this->theme, self::$_bs3Themes) && !in_array($this->theme, self::$_bs4Themes)) {
+        if (!in_array($this->theme, self::$_bs3Themes) && !in_array($this->theme, self::$_bs4Themes) && !in_array($this->theme, self::$_liteThemes)) {
             SummernoteAsset::register($view)->define($this->theme, $this->i18n);
+            SummernoteThemeAsset::register($view)->define($this->theme);
         }
 
         $this->registerBundle(self::$_bs3Themes,self::THEME_BS3);
         $this->registerBundle(self::$_bs4Themes,self::THEME_BS4);
+        $this->registerBundle(self::$_liteThemes,self::THEME_LITE);
         
-        SummernoteBaseAsset::register($view);
-
         if ($this->i18n) {
             $lang = [
                 'lang' => Yii::$app->language . '-' . strtoupper(Yii::$app->language)
             ];
             $this->pluginOptions = ArrayHelper::merge($this->pluginOptions, $lang) ;
-        }
-
-        if ($this->emoji) {
-            EmojiAsset::register($view);
         }
 
         $pluginOptions = Json::encode($this->pluginOptions);
@@ -205,9 +202,7 @@ JS;
         if (in_array($this->theme, $themes)) {
 
             SummernoteAsset::register($view)->define($theme, $this->i18n);
-
-            $bundleClass = __NAMESPACE__ . '\assets\Summernote' . Inflector::id2camel($this->theme) . 'Asset';
-            $bundleClass::register($view);
+            SummernoteThemeAsset::register($view)->define($theme, $this->theme);
         }
     }
 
@@ -284,37 +279,6 @@ JS;
             }');
 
             $this->pluginOptions['callbacks'] = $callbacks;
-
-
-            $js = <<< JS
-            function onImageUpload(file,container,url) {
-                if (file.type.includes('image')) {
-                    var name = file.name.split(".");
-                    name = name[0];
-                    var data = new FormData();
-                    data.append('action', 'imgUpload');
-                    data.append('file', file);
-                    $.ajax({
-                        url: url,
-                        type: 'POST',
-                        contentType: false,
-                        cache: false,
-                        processData: false,
-                        dataType: 'JSON',
-                        data: data,
-                        success: function (response) {
-                            $(container).summernote('insertImage', response.filelink);
-                        },
-                        error: function (jqXHR, textStatus, errorThrown) {
-                            console.error(textStatus + " " + errorThrown);
-                        }
-                    });
-                }
-            }
-
-JS;
-            $view = $this->getView();
-            $view->registerJs($js, $view::POS_END);
         }
     }
 }

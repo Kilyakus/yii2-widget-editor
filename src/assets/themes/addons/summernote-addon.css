@@ -15,6 +15,9 @@
 .note-btn-group>.note-btn,
 .note-btn-group>.note-btn-group {margin-left:-1px;}
 
+.note-btn-group>.note-btn i,
+.note-btn-group>.note-btn-group i {padding:0!important;}
+
 .note-editor .note-toolbar .note-btn-group.note-view {float:right;}
 
 .note-editor .note-toolbar .note-btn-group.note-color {}
