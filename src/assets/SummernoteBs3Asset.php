@@ -5,21 +5,12 @@ use yii\web\AssetBundle;
 
 class SummernoteBs3Asset extends AssetBundle
 {
-    /**
-     * @inherit
-     */
     public $sourcePath = '@kilyakus/widget/redactor/assets/dist';
 
-    /**
-     * @inherit
-     */
     public $css = [
         'summernote.css',
     ];
 
-    /**
-     * @inherit
-     */
     public $js = [
         'summernote.js',
     ];

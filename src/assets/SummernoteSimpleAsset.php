@@ -7,7 +7,7 @@ class SummernoteSimpleAsset extends AssetBundle
 {
     public function init()
     {
-        $this->sourcePath = __DIR__ . '/lib/simple';
+        $this->sourcePath = __DIR__ . '/themes/simple';
 
         $this->css[] = 'simple-summernote.css';
 

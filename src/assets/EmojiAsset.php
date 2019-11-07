@@ -1,12 +1,16 @@
 <?php
 namespace kilyakus\widget\redactor\assets;
 
-class EmojiAsset extends BaseAsset
+use yii\web\AssetBundle;
+
+class EmojiAsset extends AssetBundle
 {
     public function init()
     {
-        $this->setSourcePath(__DIR__ . '/lib/emoji');
-        $this->setupAssets('js', ['js/summernote-emoji']);
+        $this->sourcePath = __DIR__ . '/dist/emoji';
+
+        $this->js[] = 'js/summernote-emoji.js';
+
         parent::init();
     }
 }

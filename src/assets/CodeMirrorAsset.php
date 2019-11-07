@@ -1,12 +1,4 @@
 <?php
-/**
- * User: Vladimir Baranov <phpnt@yandex.ru>
- * Git: <https://github.com/phpnt>
- * VK: <https://vk.com/phpnt>
- * Date: 26.01.2019
- * Time: 19:29
- */
-
 namespace kilyakus\widget\redactor\assets;
 
 use yii\web\AssetBundle;
@@ -34,5 +26,6 @@ class CodeMirrorAsset extends AssetBundle
 
     public $depends = [
         'yii\web\YiiAsset',
+        'kartik\editors\assets\CodemirrorAsset'
     ];
 }
