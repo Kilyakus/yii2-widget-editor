@@ -16,7 +16,7 @@ use yii\helpers\Json;
 use yii\helpers\Inflector;
 use yii\web\JsExpression;
 
-class Summernote extends InputWidget
+class Redactor extends InputWidget
 {
     public $pluginName = 'summernote';
 

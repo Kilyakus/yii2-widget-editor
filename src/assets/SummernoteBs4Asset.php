@@ -19,6 +19,6 @@ class SummernoteBs4Asset extends AssetBundle
         'yii\web\YiiAsset',
         'yii\bootstrap4\BootstrapAsset',
         'yii\bootstrap4\BootstrapPluginAsset',
-        'phpnt\fontAwesome\FontAwesomeAsset',
+        'kilyakus\fontawesome\FontAwesomeAsset',
     ];
 }
