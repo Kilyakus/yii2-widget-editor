@@ -154,9 +154,9 @@ class Summernote extends InputWidget
         if ($this->emoji) {
             $script .= "kvInitEmojis();\n";
         }
-        // if ($this->codemirror && $this->autoFormatCode) {
-        //     $script .= "kvInitCMFormatter('{$id}');\n";
-        // }
+        if ($this->codemirror) { // && $this->autoFormatCode
+            $script .= "kvInitCMFormatter('{$id}');\n";
+        }
         $script .= parent::getPluginScript($name, $element, $callback, $callbackCon);
         return $script;
     }
