@@ -21,7 +21,7 @@ class Redactor extends InputWidget
     const THEME_LITE = 'lite';
     const THEME_SIMPLE = 'simple';
 
-    public $theme = self::THEME_SIMPLE;
+    public $theme = self::THEME_BS3;
 
     protected static $_bs3Themes = [
         self::THEME_SIMPLE,
