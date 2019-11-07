@@ -25,3 +25,7 @@
 .note-editor.note-frame .note-status-output:empty {padding:0;}
 
 .note-handle .note-control-selection .note-control-selection-info {white-space:nowrap;right:auto;left:0;}
+
+.note-form-group {padding-bottom:1rem;}
+
+.note-input {padding:6px 4px;border:1px solid #ededef;border-radius:4px;}
