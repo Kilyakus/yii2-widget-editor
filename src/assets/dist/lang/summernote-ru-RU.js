@@ -127,8 +127,8 @@ return /******/ (function(modules) { // webpackBootstrap
         size: 'Размер шрифта'
       },
       image: {
-        image: 'Картинка',
-        insert: 'Вставить картинку',
+        image: 'Изображение',
+        insert: 'Вставить изображение',
         resizeFull: 'Восстановить размер',
         resizeHalf: 'Уменьшить до 50%',
         resizeQuarter: 'Уменьшить до 25%',
@@ -139,13 +139,13 @@ return /******/ (function(modules) { // webpackBootstrap
         shapeCircle: 'Форма: Круг',
         shapeThumbnail: 'Форма: Миниатюра',
         shapeNone: 'Форма: Нет',
-        dragImageHere: 'Перетащите сюда картинку',
-        dropImage: 'Перетащите картинку',
+        dragImageHere: 'Перетащите сюда изображение',
+        dropImage: 'Перетащите изображение',
         selectFromFiles: 'Выбрать из файлов',
         maximumFileSize: 'Максимальный размер файла',
         maximumFileSizeError: 'Превышен максимальный размер файла',
         url: 'URL картинки',
-        remove: 'Удалить картинку',
+        remove: 'Удалить изображение',
         original: 'Оригинал'
       },
       video: {

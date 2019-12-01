@@ -7529,9 +7529,32 @@ class ImageDialog_ImageDialog {
       imageLimitation = `<small>${this.lang.image.maximumFileSize + ' : ' + readableSize}</small>`;
     }
 
-    const body = ['<div class="form-group note-form-group note-group-select-from-files">', '<label class="note-form-label">' + this.lang.image.selectFromFiles + '</label>', '<input class="note-image-input form-control-file note-form-control note-input" ', ' type="file" name="files" accept="image/*" multiple="multiple" />', imageLimitation, '</div>', '<div class="form-group note-group-image-url" style="overflow:auto;">', '<label class="note-form-label">' + this.lang.image.url + '</label>', '<input class="note-image-url form-control note-form-control note-input ', ' col-md-12" type="text" />', '</div>'].join('');
-    const buttonClass = 'btn btn-primary note-btn note-btn-primary note-image-btn';
-    const footer = `<input type="button" href="#" class="${buttonClass}" value="${this.lang.image.insert}" disabled>`;
+    const body = [
+      '<div class="form-group note-form-group note-group-select-from-files">',
+        '<label class="note-form-label">' + this.lang.image.selectFromFiles + '</label>',
+        '<input class="note-image-input form-control-file note-form-control note-input" ',
+        ' type="file" name="files" accept="image/*" multiple="multiple" />',
+        imageLimitation,
+      '</div>',
+      '<div class="text-center">or</div>',
+      '<div class="form-group note-group-image-url" style="overflow:auto;">',
+        '<label class="note-form-label">' + this.lang.image.url + '</label>',
+        '<input class="note-image-url form-control note-form-control note-input ',
+        ' col-md-12" type="text" />',
+      '</div>'
+    ].join('');
+    const inputClass = 'btn btn-primary note-btn note-btn-primary note-image-btn btn-block';
+    const buttonClass = 'btn btn-secondary note-btn note-btn-secondary note-image-btn btn-block';
+    const footer = [
+      '<div class="row">',
+        '<div class="col-xs-12 col-md-6">',
+          `<input type="button" href="#" class="${inputClass}" value="${this.lang.image.insert}" disabled>`,
+        '</div>',
+        '<div class="col-xs-12 col-md-6">',
+          `<button type="button" href="#" class="${buttonClass}" data-dismiss="modal">${this.lang.history.undo}</button>`,
+        '</div>',
+      '</div>',
+    ].join('');
     this.$dialog = this.ui.dialog({
       title: this.lang.image.insert,
       fade: this.options.dialogsFade,
