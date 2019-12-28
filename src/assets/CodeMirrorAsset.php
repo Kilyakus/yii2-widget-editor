@@ -5,17 +5,11 @@ use yii\web\AssetBundle;
 
 class CodeMirrorAsset extends AssetBundle
 {
-    /**
-     * @inherit
-     */
     public $css = [
         '//cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/codemirror.css',
         '//cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/theme/monokai.css',
     ];
 
-    /**
-     * @inherit
-     */
     public $js = [
         '//cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/codemirror.js',
         '//cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/mode/xml/xml.js',
@@ -25,6 +19,6 @@ class CodeMirrorAsset extends AssetBundle
     public $jsOptions = ['position' => \yii\web\View::POS_HEAD];
 
     public $depends = [
-        'yii\web\YiiAsset'
+        'yii\web\JqueryAsset'
     ];
 }

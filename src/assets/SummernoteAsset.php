@@ -40,7 +40,7 @@ class SummernoteAsset extends AssetBundle
     }
 
     public $depends = [
-        'yii\web\YiiAsset',
+        'yii\web\JqueryAsset',
         'yii\bootstrap\BootstrapAsset',
         'yii\bootstrap\BootstrapPluginAsset',
         'kilyakus\flaticons\FlatIconsAsset',
