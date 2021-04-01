@@ -6462,7 +6462,7 @@ class Buttons_Buttons {
           toggle: 'dropdown'
         }
       }), this.ui.dropdown({
-        items: (backColor ? ['<div class="note-palette">', '  <div class="note-palette-title">' + this.lang.color.background + '</div>', '  <div>', '    <button type="button" class="note-color-reset btn btn-light" data-event="backColor" data-value="inherit">', this.lang.color.transparent, '    </button>', '  </div>', '  <div class="note-holder" data-event="backColor"/>', '  <div>', '    <button type="button" class="note-color-select btn" data-event="openPalette" data-value="backColorPicker">', this.lang.color.cpSelect, '    </button>', '    <input type="color" id="backColorPicker" class="note-btn note-color-select-btn" value="' + this.options.colorButton.backColor + '" data-event="backColorPalette">', '  </div>', '  <div class="note-holder-custom" id="backColorPalette" data-event="backColor"/>', '</div>'].join('') : '') + (foreColor ? ['<div class="note-palette">', '  <div class="note-palette-title">' + this.lang.color.foreground + '</div>', '  <div>', '    <button type="button" class="note-color-reset btn btn-light" data-event="removeFormat" data-value="foreColor">', this.lang.color.resetToDefault, '    </button>', '  </div>', '  <div class="note-holder" data-event="foreColor"/>', '  <div>', '    <button type="button" class="note-color-select btn" data-event="openPalette" data-value="foreColorPicker">', this.lang.color.cpSelect, '    </button>', '    <input type="color" id="foreColorPicker" class="note-btn note-color-select-btn" value="' + this.options.colorButton.foreColor + '" data-event="foreColorPalette">', '  <div class="note-holder-custom" id="foreColorPalette" data-event="foreColor"/>', '</div>'].join('') : ''),
+        items: (backColor ? ['<div class="note-palette">', '  <div class="note-palette-title">' + this.lang.color.background + '</div>', '  <div>', '    <button type="button" class="note-color-reset btn btn-light" data-event="backColor" data-value="inherit">', this.lang.color.transparent, '    </button>', '  </div>', '  <div class="note-holder" data-event="backColor"/>', '  <div>', '    <button type="button" class="note-color-select btn" data-event="openPalette" data-value="backColorPicker-' + this.context.$note[0].id + '">', this.lang.color.cpSelect, '    </button>', '    <input type="color" id="backColorPicker-' + this.context.$note[0].id + '" class="note-btn note-color-select-btn" value="' + this.options.colorButton.backColor + '" data-event="backColorPalette">', '  </div>', '  <div class="note-holder-custom" id="backColorPalette" data-event="backColor"/>', '</div>'].join('') : '') + (foreColor ? ['<div class="note-palette">', '  <div class="note-palette-title">' + this.lang.color.foreground + '</div>', '  <div>', '    <button type="button" class="note-color-reset btn btn-light" data-event="removeFormat" data-value="foreColor">', this.lang.color.resetToDefault, '    </button>', '  </div>', '  <div class="note-holder" data-event="foreColor"/>', '  <div>', '    <button type="button" class="note-color-select btn" data-event="openPalette" data-value="foreColorPicker-' + this.context.$note[0].id + '">', this.lang.color.cpSelect, '    </button>', '    <input type="color" id="foreColorPicker-' + this.context.$note[0].id + '" class="note-btn note-color-select-btn" value="' + this.options.colorButton.foreColor + '" data-event="foreColorPalette">', '  <div class="note-holder-custom" id="foreColorPalette" data-event="foreColor"/>', '</div>'].join('') : ''),
         callback: $dropdown => {
           $dropdown.find('.note-holder').each((idx, item) => {
             const $holder = external_jQuery_default()(item);
@@ -8602,8 +8602,8 @@ var renderer = __webpack_require__(1);
 // CONCATENATED MODULE: ./src/js/bs3/ui.js
 
 
-const editor = renderer["a" /* default */].create('<div class="note-editor note-frame panel panel-default"/>');
-const toolbar = renderer["a" /* default */].create('<div class="note-toolbar panel-heading" role="toolbar"></div></div>');
+const editor = renderer["a" /* default */].create('<div class="note-editor note-frame"/>');
+const toolbar = renderer["a" /* default */].create('<div class="note-toolbar" role="toolbar"></div></div>');
 const editingArea = renderer["a" /* default */].create('<div class="note-editing-area"/>');
 const codable = renderer["a" /* default */].create('<textarea class="note-codable" role="textbox" aria-multiline="true"/>');
 const editable = renderer["a" /* default */].create('<div class="note-editable" contentEditable="true" role="textbox" aria-multiline="true"/>');
@@ -8722,7 +8722,7 @@ const ui = {
         }).tooltip({
           container: options.container !== undefined ? options.container : 'body',
           trigger: 'hover',
-          placement: 'bottom'
+          placement: 'top'
         }).on('click', e => {
           external_jQuery_default()(e.currentTarget).tooltip('hide');
         });

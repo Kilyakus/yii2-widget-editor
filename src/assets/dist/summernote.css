@@ -341,6 +341,7 @@
   display: block;
 }
 .note-editor.note-frame .note-editing-area {
+  width:100%;
   overflow: hidden;
 }
 .note-editor.note-frame .note-editing-area .note-editable {

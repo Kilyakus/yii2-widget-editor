@@ -1,6 +1,6 @@
 .note-editor.note-frame {border:0;}
 
-.note-editor.note-frame .panel-heading.note-toolbar {border:0;background:transparent;padding:0 0 10px 0;}
+.note-editor.note-frame .note-toolbar {border:0;background:transparent;padding:0 0 10px 0;}
 
 .note-btn-group>.note-btn:first-child,
 .note-btn-group>.note-btn-group:first-child {margin-left:0;}

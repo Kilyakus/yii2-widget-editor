@@ -14,271 +14,322 @@ use yii\web\JsExpression;
 
 class Redactor extends InputWidget
 {
-    public $pluginName = 'summernote';
+	public $pluginName = 'summernote';
 
-    const THEME_BS3 = 'bs3';
-    const THEME_BS4 = 'bs4';
-    const THEME_LITE = 'lite';
-    const THEME_SIMPLE = 'simple';
+	const THEME_BS3 = 'bs3';
+	const THEME_BS4 = 'bs4';
+	const THEME_LITE = 'lite';
+	const THEME_SIMPLE = 'simple';
 
-    public $theme = self::THEME_BS3;
+	public $theme = self::THEME_BS3;
 
-    protected static $_bs3Themes = [
-        self::THEME_SIMPLE,
-    ];
+	protected static $_bs3Themes = [
+		self::THEME_SIMPLE,
+	];
 
-    protected static $_bs4Themes = [
-    ];
+	protected static $_bs4Themes = [
+	];
 
-    protected static $_liteThemes = [
-    ];
+	protected static $_liteThemes = [
+	];
 
-    public $i18n = true;
-    public $emoji = false;
-    public $fullscreen = true;
-    public $codemirror = false;
+	public $i18n = true;
+	public $emoji = false;
+	public $fullscreen = true;
+	public $codemirror = false;
 
-    public $options         = [];
-    public $pluginOptions   = [];
-    public $usePresets = true;
-    protected $pluginPresets = [
-        'tabsize' => 2,
-        'minHeight' => 150,
-        'maxHeight' => 400,
-        'focus' => true,
-        'toolbar' => [
-            ['style1', ['style', 'clear']],
-            ['style2', ['bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript']],
-            ['font', ['fontname', 'fontsize', 'height', 'color']],
-            ['para', ['ul', 'ol', 'paragraph']],
-            ['insert', ['link', 'picture', 'video', ]],
-            ['misc', ['table', 'hr']]
-        ]
-    ];
+	public $options         = [];
+	public $pluginOptions   = [];
+	public $usePresets = true;
+	protected $pluginPresets = [
+		'tabsize' => 2,
+		'minHeight' => 150,
+		'maxHeight' => 400,
+		'focus' => false,
+		'toolbar' => [
+			['tool', ['emoji']],
+			['style1', ['style', 'clear']],
+			['style2', ['bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript']],
+			['font', ['fontname', 'fontsize', 'height', 'color']],
+			['para', ['ul', 'ol', 'paragraph']],
+			['insert', ['link', 'picture', 'video', ]],
+			['misc', ['table', 'hr']]
+		]
+	];
 
-    public $codemirrorOptions = [
-        'codemirror' => [
-            // 'theme' => 'monokai',
-            'mode' => 'text/html',
-            'htmlMode' => true,
-            'lineNumbers' => true,
-            'styleActiveLine' => true,
-            'matchBrackets' => true,
-            'smartIndent' => true,
-        ]
-    ];
+	public $codemirrorOptions = [
+		'codemirror' => [
+			// 'theme' => 'monokai',
+			'mode' => 'text/html',
+			'htmlMode' => true,
+			'lineNumbers' => true,
+			'styleActiveLine' => true,
+			'matchBrackets' => true,
+			'smartIndent' => true,
+		]
+	];
 
-    public $hintWords = [];
+	public $hintWords = [];
 
-    public $hintMentions = [];
+	public $hintMentions = [];
 
-    public $uploadUrl;
+	public $uploadUrl;
 
-    public $container = ['class' => 'note-editor-container'];
+	public $container = ['class' => 'note-editor-container'];
 
-    public function run()
-    {
-        return $this->initWidget();
-    }
+	public function run()
+	{
+		return $this->initWidget();
+	}
 
-    protected function initWidget()
-    {
-        $this->_msgCat = 'redactor';
-        if (!empty($this->options['placeholder']) && empty($this->pluginOptions['placeholder'])) {
-            $this->pluginOptions['placeholder'] = $this->options['placeholder'];
-        }
-        $tag = ArrayHelper::remove($this->container, 'tag', 'div');
-        if (!isset($this->container['id'])) {
-            $this->container['id'] = $this->options['id'] . '-container';
-        }
-        $this->initPresets();
-        $this->initHints();
-        $this->initCallbacks();
-        $this->registerAssets();
-        return Html::tag($tag, $this->getInput('textarea'), $this->container);
-    }
+	protected function initWidget()
+	{
+		$this->_msgCat = 'redactor';
+		if (!empty($this->options['placeholder']) && empty($this->pluginOptions['placeholder'])) {
+			$this->pluginOptions['placeholder'] = $this->options['placeholder'];
+		}
+		$tag = ArrayHelper::remove($this->container, 'tag', 'div');
+		if (!isset($this->container['id'])) {
+			$this->container['id'] = $this->options['id'] . '-container';
+		}
+		$this->initPresets();
+		$this->initHints();
+		$this->initCallbacks();
+		$this->registerAssets();
+		return Html::tag($tag, $this->getInput('textarea'), $this->container);
+	}
 
-    protected function initPresets()
-    {
-        $view = $this->getView();
+	protected function initPresets()
+	{
+		$view = $this->getView();
 
-        if(!empty($this->pluginOptions) && $this->usePresets == true){
+		if(!empty($this->pluginOptions) && $this->usePresets == true){
 
-            $pluginOptions = $this->pluginOptions;
+			$pluginOptions = $this->pluginOptions;
 
-            foreach ($this->pluginPresets as $attribute => $option) {
-                if($attribute == 'toolbar' && $this->pluginOptions[$attribute]){
-                    foreach ($this->pluginOptions[$attribute] as $pluginKey => $pluginAttribute) {
-                        foreach ($option as $optionKey => $optionAttribute) {
-                            if($pluginAttribute[0] == $optionAttribute[0]){
-                                $this->pluginPresets[$attribute][$optionKey] = $this->pluginOptions[$attribute][$pluginKey];
-                                unset($this->pluginOptions[$attribute][$pluginKey]);
-                            }
-                        }
-                    }
-                }
-            }
+			foreach ($this->pluginPresets as $attribute => $option) {
+				if($attribute == 'toolbar' && $this->pluginOptions[$attribute]){
+					foreach ($this->pluginOptions[$attribute] as $pluginKey => $pluginAttribute) {
+						foreach ($option as $optionKey => $optionAttribute) {
+							if($pluginAttribute[0] == $optionAttribute[0]){
+								$this->pluginPresets[$attribute][$optionKey] = $this->pluginOptions[$attribute][$pluginKey];
+								unset($this->pluginOptions[$attribute][$pluginKey]);
+							}
+						}
+					}
+				}
+			}
 
-            $this->pluginOptions = ArrayHelper::merge($this->pluginPresets, $this->pluginOptions);
-        }
+			$this->pluginOptions = ArrayHelper::merge($this->pluginPresets, $this->pluginOptions);
+		}
 
-        $toolView = [];
+		$toolView = [];
 
-        if ($this->codemirror) {
+		if ($this->codemirror) {
 
-            $toolView[] = 'codeview';
+			$toolView[] = 'codeview';
 
-            if (isset($this->pluginOptions['codemirror'])) {
-                $this->codemirrorOptions = ArrayHelper::merge($this->codemirrorOptions, $this->pluginOptions['codemirror']);
-            }
-            $this->pluginOptions = ArrayHelper::merge($this->pluginOptions, $this->codemirrorOptions);
+			if (isset($this->pluginOptions['codemirror'])) {
+				$this->codemirrorOptions = ArrayHelper::merge($this->codemirrorOptions, $this->pluginOptions['codemirror']);
+			}
+			$this->pluginOptions = ArrayHelper::merge($this->pluginOptions, $this->codemirrorOptions);
 
-            CodeMirrorAsset::register($view);
-        }
+			CodeMirrorAsset::register($view);
+		}
 
-        if ($this->fullscreen) {
+		if ($this->fullscreen) {
 
-            $toolView[] = 'fullscreen';
-            
-        }
+			$toolView[] = 'fullscreen';
 
-        if (!empty($toolView)) {
-            $this->pluginOptions['toolbar'][] = ['view', $toolView];
-        }
-    }
+		}
 
-    public function getPluginScript($name, $element = null, $callback = null, $callbackCon = null)
-    {
-        $script = '';
-        $id = $this->options['id'];
-        if ($this->emoji) {
-            $script .= "initEmojis();\n";
-        }
-        if ($this->codemirror) {
-            $script .= "initCMFormatter('{$id}');\n";
-        }
-        $script .= parent::getPluginScript($name, $element, $callback, $callbackCon);
-        return $script;
-    }
+		if (!empty($toolView)) {
+			$this->pluginOptions['toolbar'][] = ['view', $toolView];
+		}
+	}
 
-    public function registerAssets()
-    {
-        $fieldId = $this->options['id'];
+	public function getPluginScript($name, $element = null, $callback = null, $callbackCon = null)
+	{
+		$script = '';
+		$id = $this->options['id'];
+		if ($this->emoji) {
+			$script .= "initEmojis();\n";
+		}
+		if ($this->codemirror) {
+			$script .= "initCMFormatter('{$id}');\n";
+		}
+		$script .= parent::getPluginScript($name, $element, $callback, $callbackCon);
+		return $script;
+	}
 
-        $view = $this->getView();
+	public function registerAssets()
+	{
+		$fieldId = $this->options['id'];
 
-        if (!in_array($this->theme, self::$_bs3Themes) && !in_array($this->theme, self::$_bs4Themes) && !in_array($this->theme, self::$_liteThemes)) {
-            SummernoteAsset::register($view)->define($this->theme, $this->i18n);
-            SummernoteThemeAsset::register($view)->define($this->theme);
-        }
+		$view = $this->getView();
 
-        $this->registerBundle(self::$_bs3Themes,self::THEME_BS3);
-        $this->registerBundle(self::$_bs4Themes,self::THEME_BS4);
-        $this->registerBundle(self::$_liteThemes,self::THEME_LITE);
-        
-        if ($this->i18n) {
-            $lang = [
-                'lang' => Yii::$app->language . '-' . strtoupper(Yii::$app->language)
-            ];
-            $this->pluginOptions = ArrayHelper::merge($this->pluginOptions, $lang) ;
-        }
+		if (!in_array($this->theme, self::$_bs3Themes) && !in_array($this->theme, self::$_bs4Themes) && !in_array($this->theme, self::$_liteThemes)) {
+			SummernoteAsset::register($view)->define($this->theme, $this->i18n);
+			SummernoteThemeAsset::register($view)->define($this->theme);
+		}
 
-        $pluginOptions = Json::encode($this->pluginOptions);
+		$this->registerBundle(self::$_bs3Themes,self::THEME_BS3);
+		$this->registerBundle(self::$_bs4Themes,self::THEME_BS4);
+		$this->registerBundle(self::$_liteThemes,self::THEME_LITE);
 
-        $js = <<< JS
-        $(document).ready(function(){
-            $("#$fieldId").summernote($pluginOptions);
-        });
+		if ($this->i18n) {
+			$lang = [
+				'lang' => Yii::$app->language . '-' . strtoupper(Yii::$app->language)
+			];
+			$this->pluginOptions = ArrayHelper::merge($this->pluginOptions, $lang) ;
+		}
+
+		$this->pluginOptions['callbacks']['onPaste'] = new JsExpression('function (contents) {
+			setTimeout(function() {
+				$("#' . $this->options['id'] . '-container .note-editable *").each(function()
+				{
+					var removeAttributes = [
+						"id",
+						"class",
+						"size",
+					];
+					for (var i=0; i < removeAttributes.length; i++) {
+						this.removeAttribute(removeAttributes[i]);
+					}
+					var removeProperties = [
+						"line-height",
+						"font-family",
+						"font-style",
+						"font-variant",
+						"font-size",
+						// "font-weight",
+						"text-decoration",
+						"color",
+						"background-color",
+						"margin",
+						"padding",
+						"border",
+						"background",
+						"vertical-align",
+						"white-space",
+						"display",
+						"position",
+					];
+					for (var i=0; i < removeProperties.length; i++) {
+						this.style.removeProperty(removeProperties[i]);
+					}
+
+					var text = $(this).text();
+					if (text && text.length > 0)
+					{
+						text = text.replace(/<(?:.|\n)*?>/gm, "").trim();
+						return text.length ? text.split(/\s+/).length : $(this).replaceWith(function(){
+							return $(this).html();
+						});
+					} else {
+						return $(this).replaceWith(function(){
+							return $(this).html();
+						});
+					}
+				});
+			}, 0);
+		}');
+		$pluginOptions = Json::encode($this->pluginOptions);
+
+		$js = <<< JS
+		$(document).ready(function(){
+			$("#$fieldId").summernote($pluginOptions);
+		});
 JS;
-        $view->registerJs($js);
+		$view->registerJs($js);
 
-        $this->registerPlugin($this->pluginName);
-    }
+		$this->registerPlugin($this->pluginName);
+	}
 
-    public function registerBundle($themes,$theme)
-    {
-        $view = $this->getView();
+	public function registerBundle($themes,$theme)
+	{
+		$view = $this->getView();
 
-        if (in_array($this->theme, $themes)) {
+		if (in_array($this->theme, $themes)) {
 
-            SummernoteAsset::register($view)->define($theme, $this->i18n);
-            SummernoteThemeAsset::register($view)->define($theme, $this->theme);
-        }
-    }
+			SummernoteAsset::register($view)->define($theme, $this->i18n);
+			SummernoteThemeAsset::register($view)->define($theme, $this->theme);
+		}
+	}
 
-    protected function initHints()
-    {
-        $hint = ArrayHelper::getValue($this->pluginOptions, 'hint', []);
-        if (!empty($this->hintWords)) {
-            $hint[] = [
-                'words' => $this->hintWords,
-                'match' => new JsExpression('/\b(\w{1,})$/'),
-                'search' => new JsExpression(
-                    'function (keyword, callback) {' .
-                    '    callback($.grep(this.words, function (item) {' .
-                    '        return item.indexOf(keyword) === 0;' .
-                    '    }));' .
-                    '}'
-                ),
-            ];
-        }
-        if (!empty($this->hintMentions)) {
-            $hint[] = [
-                'mentions' => $this->hintMentions,
-                'match' => new JsExpression('/\B@(\w*)$/'),
-                'search' => new JsExpression(
-                    'function (keyword, callback) {' .
-                    '    callback($.grep(this.mentions, function (item) {' .
-                    '        return item.indexOf(keyword) == 0;' .
-                    '    }));' .
-                    '}'
-                ),
-                'content' => new JsExpression('function (item) { return "@" + item; }'),
-            ];
-        }
-        if ($this->emoji) {
-            /** @noinspection RequiredAttributes */
-            $hint[] = [
-                'match' => new JsExpression('/:([\-+\w]+)$/'),
-                'search' => new JsExpression(
-                    'function (keyword, callback) {' .
-                    '    callback($.grep(kvEmojis, function (item) {' .
-                    '        return item.indexOf(keyword) === 0;' .
-                    '    }));' .
-                    '}'
-                ),
-                'template' => new JsExpression(
-                    'function (item) {' .
-                    '    var content = kvEmojiUrls[item];' .
-                    '    return \'<img src="\' + content + \'" width="20" /> :\' + item + \':\'' .
-                    '}'
-                ),
-                'content' => new JsExpression(
-                    'function (item) {' .
-                    '    var url = kvEmojiUrls[item];' .
-                    '    if (url) {' .
-                    '        return $("<img />").attr("src", url).css("width", 20)[0];' .
-                    '    }' .
-                    '    return "";' .
-                    '}'
-                ),
-            ];
-        }
-        $this->pluginOptions['hint'] = $hint;
-    }
+	protected function initHints()
+	{
+		$hint = ArrayHelper::getValue($this->pluginOptions, 'hint', []);
+		if (!empty($this->hintWords)) {
+			$hint[] = [
+				'words' => $this->hintWords,
+				'match' => new JsExpression('/\b(\w{1,})$/'),
+				'search' => new JsExpression(
+					'function (keyword, callback) {' .
+					'    callback($.grep(this.words, function (item) {' .
+					'        return item.indexOf(keyword) === 0;' .
+					'    }));' .
+					'}'
+				),
+			];
+		}
+		if (!empty($this->hintMentions)) {
+			$hint[] = [
+				'mentions' => $this->hintMentions,
+				'match' => new JsExpression('/\B@(\w*)$/'),
+				'search' => new JsExpression(
+					'function (keyword, callback) {' .
+					'    callback($.grep(this.mentions, function (item) {' .
+					'        return item.indexOf(keyword) == 0;' .
+					'    }));' .
+					'}'
+				),
+				'content' => new JsExpression('function (item) { return "@" + item; }'),
+			];
+		}
+		if ($this->emoji) {
+			/** @noinspection RequiredAttributes */
+			$hint[] = [
+				'match' => new JsExpression('/:([\-+\w]+)$/'),
+				'search' => new JsExpression(
+					'function (keyword, callback) {' .
+					'    callback($.grep(kvEmojis, function (item) {' .
+					'        return item.indexOf(keyword) === 0;' .
+					'    }));' .
+					'}'
+				),
+				'template' => new JsExpression(
+					'function (item) {' .
+					'    var content = kvEmojiUrls[item];' .
+					'    return \'<img src="\' + content + \'" width="20" /> :\' + item + \':\'' .
+					'}'
+				),
+				'content' => new JsExpression(
+					'function (item) {' .
+					'    var url = kvEmojiUrls[item];' .
+					'    if (url) {' .
+					'        return $("<img />").attr("src", url).css("width", 20)[0];' .
+					'    }' .
+					'    return "";' .
+					'}'
+				),
+			];
+		}
+		$this->pluginOptions['hint'] = $hint;
+	}
 
-    protected function initCallbacks()
-    {
-        if($this->uploadUrl){
-            $callbacks = ArrayHelper::getValue($this->pluginOptions, 'callbacks', []);
+	protected function initCallbacks()
+	{
+		if($this->uploadUrl){
+			$callbacks = ArrayHelper::getValue($this->pluginOptions, 'callbacks', []);
 
-            $callbacks['onImageUpload'] = new JsExpression('function(files) {
-                    for(var i=0; i < files.length; i++) {
-                        onImageUpload(files[i],"#'.$this->options['id'].'","'.$this->uploadUrl.'");
-                    }
-            }');
+			$callbacks['onImageUpload'] = new JsExpression('function(files) {
+					for(var i=0; i < files.length; i++) {
+						onImageUpload(files[i],"#'.$this->options['id'].'","'.$this->uploadUrl.'");
+					}
+			}');
 
-            $this->pluginOptions['callbacks'] = $callbacks;
-        }
-    }
+			$this->pluginOptions['callbacks'] = $callbacks;
+		}
+	}
 }

@@ -29,3 +29,11 @@
 .note-form-group {padding-bottom:1rem;}
 
 .note-input {padding:6px 4px;border:1px solid #ededef;border-radius:4px;}
+
+/* Summernote emoji plugin */
+.dropdown-emoji {min-width:300px!important;}
+.dropdown-emoji .row {display:flex;flex-wrap:wrap;margin-left:0;margin-right:0;}
+.dropdown-emoji .row > [class*=col] {display:flex;justify-content:center;}
+.dropdown-emoji .emoji-list {margin-top:10px;max-height:180px;overflow-y:auto;overflow-x:hidden;}
+.dropdown-emoji .emoji-icon {display:inline-block;width:30px;height:30px;padding:3px;border-radius:4px;background-size:24px;background-position:center;background-repeat:no-repeat;}
+.dropdown-emoji .emoji-icon:hover {background-color:rgba(0,0,0,0.1);}

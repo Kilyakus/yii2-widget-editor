@@ -1,5 +1,5 @@
 .note-editor.note-frame {border:1px solid #e2e5ec;}
-  .note-editor.note-frame .panel-heading.note-toolbar {background:#f7f8fa;}
+  .note-editor.note-frame .note-toolbar {background:#f7f8fa;}
   .note-editor.note-frame .note-statusbar {background:#f7f8fa;}
 
 .note-editor .note-toolbar .note-btn-group .btn {background:white;border:1px solid #ebedf2;}
